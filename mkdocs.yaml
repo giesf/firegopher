@@ -1,3 +1,5 @@
 site_name: firegopher
-site_url: https://example.com/
+site_url: https://docs.firegopher.dev
+repo_url: https://github.com/giesf/firegopher
+edit_uri: blob/main/docs/
 theme: readthedocs
