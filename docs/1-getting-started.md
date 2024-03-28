@@ -1,4 +1,6 @@
 # Getting Started
+Firegopher is a toolchain for easily running [Firecracker MicroVMs](https://firecracker-microvm.github.io/) on a Linux host. The following guide will walk you through running your first micro VM. It assumes that you are using a more or less blank Linux host.
+
 
 ## Prerequisites
 
