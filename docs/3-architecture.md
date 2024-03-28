@@ -4,7 +4,7 @@ The firegopher project is made up of three main parts:
 
 1. The **VM Runner**, which prepares the host system and starts the guest VM
 2. The **Guest Init System**, which runs inside of the guest VM and starts the user workload
-3. A set of customised root filesystems ([Base Images]()) to be used for the guest VM and an **Asset Manager** to install and manage them
+3. A set of customised root filesystems ([Base Images](#base-images)) to be used for the guest VM and an **Asset Manager** to install and manage them
 
 ![Diagram of the inner workings](assets/diagram.jpg)
 
@@ -12,10 +12,10 @@ The firegopher project is made up of three main parts:
 The VM Runner has four main responsibilities:
 
 1. It prepares the root file system for the guest VM
-    - by unpacking the user assets into a copy of the chosen [Base Image]()
-    - and creating a configuration file that instructs the [Guest Init System]() on what to do with them
-2. It prepares the [Firecracker Jail]() 
-    - by first creating a directory that will later be used by the Firecracker Jailer as a [CHROOT root directory]()
+    - by unpacking the user assets into a copy of the chosen [Base Image](#base-images)
+    - and creating a configuration file that instructs the [Guest Init System](#guest-init-system) on what to do with them
+2. It prepares the [Firecracker Jail](https://github.com/firecracker-microvm/firecracker/blob/main/docs/jailer.md) 
+    - by first creating a directory that will later be used by the Firecracker Jailer as a [CHROOT root directory](https://wiki.archlinux.org/title/chroot)
     - and copying/hardlinking all the assets that are needed to run the guest VM into it
 3. It creates and configures the network device needed for the guest VM
 4. It starts the jailed Firecracker process and supervises it
@@ -27,7 +27,7 @@ The main responsbilities of the guest init system are:
 
 1. reading the configuration passed to it from the VM Runner
 2. mounting the root file system
-3. mounting all the required [device files]()
+3. mounting all the required [device files](https://en.wikipedia.org/wiki/Device_file)
 4. configuring the network interface
 5. dropping root priviledges
 6. starting the user workload and supervising it
