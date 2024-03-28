@@ -2,4 +2,6 @@ site_name: firegopher
 site_url: https://docs.firegopher.dev
 repo_url: https://github.com/giesf/firegopher
 edit_uri: blob/main/docs/
-theme: readthedocs
+theme: 
+  name: null
+  custom_dir: 'docs_theme/'
