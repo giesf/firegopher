@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Architecture - firegopher</title>
+    <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/default.min.css">
+    <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <style>
+        li.current {
+            font-weight: bold;
+        }
+
+        img {
+            max-width: 100%;
+
+        }
+
+        header p {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        main {
+            max-width: 60rem;
+            margin: 1rem auto;
+            margin-bottom: 3rem;
+        }
+
+        blockquote {
+            background: #e6e6e6;
+            border-left: 4px #333 solid;
+            margin-left: 0px;
+            padding-left: 1.5rem;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+
+        .read-next {
+            padding: 2rem 0rem;
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <header>
+            <p>firegopher <span style="color: #707070">/ docs</span></p>
+        </header>
+        
+        <nav>
+            <ul>
+                
+                
+                <li class="">
+                    <a href="..">What is firegopher?</a>
+                </li>
+                
+                
+                
+                <li class="">
+                    <a href="../1-getting-started/">Getting Started</a>
+                </li>
+                
+                
+                
+                <li class="">
+                    <a href="../2-user-guide/">User Guide</a>
+                </li>
+                
+                
+                
+                <li class="current">
+                    <a href="./">Architecture</a>
+                </li>
+                
+                
+                
+                <li class="">
+                    <a href="../4-known-limitations/">Known limitations</a>
+                </li>
+                
+                
+                
+                <li class="">
+                    <a href="../5-roadmap/">Roadmap</a>
+                </li>
+                
+                
+                
+                <li class="">
+                    <a href="../6-contributing/">Contributing</a>
+                </li>
+                
+                
+            </ul>
+        </nav>
+        
+        <h1 id="architecture">Architecture</h1>
+<p>The firegopher project is made up of three main parts:</p>
+<ol>
+<li>The <strong>VM Runner</strong>, which prepares the host system and starts the guest VM</li>
+<li>The <strong>Guest Init System</strong>, which runs inside of the guest VM and starts the user workload</li>
+<li>A set of customised root filesystems (<a href="">Base Images</a>) to be used for the guest VM and an <strong>Asset Manager</strong> to install and manage them</li>
+</ol>
+<p><img alt="Diagram of the inner workings" src="../assets/diagram.jpg" /></p>
+<h2 id="vm-runner">VM Runner</h2>
+<p>The VM Runner has four main responsibilities:</p>
+<ol>
+<li>It prepares the root file system for the guest VM<ul>
+<li>by unpacking the user assets into a copy of the chosen <a href="">Base Image</a></li>
+<li>and creating a configuration file that instructs the <a href="">Guest Init System</a> on what to do with them</li>
+</ul>
+</li>
+<li>It prepares the <a href="">Firecracker Jail</a> <ul>
+<li>by first creating a directory that will later be used by the Firecracker Jailer as a <a href="">CHROOT root directory</a></li>
+<li>and copying/hardlinking all the assets that are needed to run the guest VM into it</li>
+</ul>
+</li>
+<li>It creates and configures the network device needed for the guest VM</li>
+<li>It starts the jailed Firecracker process and supervises it</li>
+</ol>
+<h2 id="guest-init-system">Guest Init System</h2>
+<p>The Guest Init System is a barebones init system specifically designed to run a single application inside of a VM. At its core it is a go-rewrite of <a href="https://github.com/superfly/init-snapshot">fly-init-snapshot</a>.</p>
+<p>The main responsbilities of the guest init system are:</p>
+<ol>
+<li>reading the configuration passed to it from the VM Runner</li>
+<li>mounting the root file system</li>
+<li>mounting all the required <a href="">device files</a></li>
+<li>configuring the network interface</li>
+<li>dropping root priviledges</li>
+<li>starting the user workload and supervising it</li>
+</ol>
+<h2 id="asset-manager">Asset Manager</h2>
+<p>The Asset Manager is currently in the early stages of its development. In its current state it is little more than a glorified download script. </p>
+<p>It downloads the following assets:</p>
+<ol>
+<li>A Linux Kernel Image</li>
+<li>A specific version of Firecracker (currently 1.6.0)</li>
+<li>A modified version of the Ubuntu 22.04 root file system</li>
+</ol>
+<h2 id="base-images">Base Images</h2>
+<p>Currently there is only one officialy supported base image available to be used with firegopher. It is a slgihtly modified version of <a href="https://cloud-images.ubuntu.com/minimal/releases/jammy/release/">Ubuntu 22.04 Minimal</a>.</p>
+<p>The base image has been modified by running the following bash script inside a container running <a href="https://gallery.ecr.aws/ubuntu/ubuntu">public.ecr.aws/ubuntu/ubuntu:jammy</a>:</p>
+<pre><code class="language-bash"># Install dependencies to run a basic python-based demo application
+apt-get update
+apt-get install -y ca-certificates 
+apt-get install -y curl
+apt-get install -y python3
+rm -rf /var/lib/apt/lists/*
+
+
+# Copy everything we need to the bind-mounted rootfs image file
+dirs=&quot;bin etc home lib lib64 root sbin usr&quot;
+for d in $dirs; do tar c &quot;/$d&quot; | tar x -C $rootfs; done
+
+# Make mountpoints
+mkdir -pv $rootfs/{dev,proc,sys,run,tmp,var/lib/systemd}
+</code></pre>
+<p>The process of creating this base image is based on the process <a href="https://github.com/firecracker-microvm/firecracker/blob/main/docs/rootfs-and-kernel-setup.md#creating-a-rootfs-image">outlined by the Firecracker team here</a>.</p>
+
+        <div class="read-next">
+            <a href="/2-user-guide/">Previous: User Guide</a>
+            <a href="/4-known-limitations/">Next: Known limitations</a>
+        </div>
+        <script src="../search/main.js"></script>
+    </main>
+    <script>hljs.highlightAll();</script>
+</body>
+
+</html>
