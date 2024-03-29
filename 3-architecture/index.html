@@ -129,13 +129,13 @@
 </ol>
 <h2 id="guest-init-system">Guest Init System</h2>
 <p>The Guest Init System is a barebones init system specifically designed to run a single application inside of a VM. At its core it is a go-rewrite of <a href="https://github.com/superfly/init-snapshot">fly-init-snapshot</a>.</p>
-<p>The main responsbilities of the guest init system are:</p>
+<p>The main responsibilities of the guest init system are:</p>
 <ol>
 <li>reading the configuration passed to it from the VM Runner</li>
 <li>mounting the root file system</li>
 <li>mounting all the required <a href="https://en.wikipedia.org/wiki/Device_file">device files</a></li>
 <li>configuring the network interface</li>
-<li>dropping root priviledges</li>
+<li>dropping root privileges</li>
 <li>starting the user workload and supervising it</li>
 </ol>
 <h2 id="asset-manager">Asset Manager</h2>
@@ -147,7 +147,7 @@
 <li>A modified version of the Ubuntu 22.04 root file system</li>
 </ol>
 <h2 id="base-images">Base Images</h2>
-<p>Currently there is only one officialy supported base image available to be used with firegopher. It is a slgihtly modified version of <a href="https://cloud-images.ubuntu.com/minimal/releases/jammy/release/">Ubuntu 22.04 Minimal</a>.</p>
+<p>Currently there is only one officially supported base image available to be used with firegopher. It is a slightly modified version of <a href="https://cloud-images.ubuntu.com/minimal/releases/jammy/release/">Ubuntu 22.04 Minimal</a>.</p>
 <p>The base image has been modified by running the following bash script inside a container running <a href="https://gallery.ecr.aws/ubuntu/ubuntu">public.ecr.aws/ubuntu/ubuntu:jammy</a>:</p>
 <pre><code class="language-bash"># Install dependencies to run a basic python-based demo application
 apt-get update
