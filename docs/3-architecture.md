@@ -23,13 +23,13 @@ The VM Runner has four main responsibilities:
 ## Guest Init System
 The Guest Init System is a barebones init system specifically designed to run a single application inside of a VM. At its core it is a go-rewrite of [fly-init-snapshot](https://github.com/superfly/init-snapshot).
 
-The main responsbilities of the guest init system are:
+The main responsibilities of the guest init system are:
 
 1. reading the configuration passed to it from the VM Runner
 2. mounting the root file system
 3. mounting all the required [device files](https://en.wikipedia.org/wiki/Device_file)
 4. configuring the network interface
-5. dropping root priviledges
+5. dropping root privileges
 6. starting the user workload and supervising it
 
 
@@ -44,7 +44,7 @@ It downloads the following assets:
 
 
 ## Base Images
-Currently there is only one officialy supported base image available to be used with firegopher. It is a slgihtly modified version of [Ubuntu 22.04 Minimal](https://cloud-images.ubuntu.com/minimal/releases/jammy/release/).
+Currently there is only one officially supported base image available to be used with firegopher. It is a slightly modified version of [Ubuntu 22.04 Minimal](https://cloud-images.ubuntu.com/minimal/releases/jammy/release/).
 
 The base image has been modified by running the following bash script inside a container running [public.ecr.aws/ubuntu/ubuntu:jammy](https://gallery.ecr.aws/ubuntu/ubuntu):
 
