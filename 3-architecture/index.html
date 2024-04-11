@@ -110,7 +110,6 @@
 <li>The <strong>Guest Init System</strong>, which runs inside of the guest VM and starts the user workload</li>
 <li>A set of customised root filesystems (<a href="#base-images">Base Images</a>) to be used for the guest VM and an <strong>Asset Manager</strong> to install and manage them</li>
 </ol>
-<p><img alt="Diagram of the inner workings" src="../assets/diagram.jpg" /></p>
 <h2 id="vm-runner">VM Runner</h2>
 <p>The VM Runner has four main responsibilities:</p>
 <ol>
@@ -147,24 +146,12 @@
 <li>A modified version of the Ubuntu 22.04 root file system</li>
 </ol>
 <h2 id="base-images">Base Images</h2>
-<p>Currently there is only one officially supported base image available to be used with firegopher. It is a slightly modified version of <a href="https://cloud-images.ubuntu.com/minimal/releases/jammy/release/">Ubuntu 22.04 Minimal</a>.</p>
-<p>The base image has been modified by running the following bash script inside a container running <a href="https://gallery.ecr.aws/ubuntu/ubuntu">public.ecr.aws/ubuntu/ubuntu:jammy</a>:</p>
-<pre><code class="language-bash"># Install dependencies to run a basic python-based demo application
-apt-get update
-apt-get install -y ca-certificates 
-apt-get install -y curl
-apt-get install -y python3
-rm -rf /var/lib/apt/lists/*
-
-
-# Copy everything we need to the bind-mounted rootfs image file
-dirs=&quot;bin etc home lib lib64 root sbin usr&quot;
-for d in $dirs; do tar c &quot;/$d&quot; | tar x -C $rootfs; done
-
-# Make mountpoints
-mkdir -pv $rootfs/{dev,proc,sys,run,tmp,var/lib/systemd}
-</code></pre>
-<p>The process of creating this base image is based on the process <a href="https://github.com/firecracker-microvm/firecracker/blob/main/docs/rootfs-and-kernel-setup.md#creating-a-rootfs-image">outlined by the Firecracker team here</a>.</p>
+<p>Currently there is only one officially supported base image available to be used with firegopher. It is a slightly modified version of <a href="https://cloud-images.ubuntu.com/minimal/releases/jammy/release/">Ubuntu 22.04 Minimal</a>. The modifications that are currently done to create the finished base image are:</p>
+<ol>
+<li>Installing <code>ca-certificates</code>, <code>curl</code> and <code>python3</code></li>
+<li>Clearing out the existing package lists afterwards by deleting all files in <code>/var/lib/apt/lists/</code></li>
+</ol>
+<p>The current base image creation process is heavily based the process <a href="https://github.com/firecracker-microvm/firecracker/blob/main/docs/rootfs-and-kernel-setup.md#creating-a-rootfs-image">outlined by the Firecracker team here</a>.</p>
 
         <div class="read-next">
             <a href="/2-user-guide/">Previous: User Guide</a>
@@ -172,6 +159,7 @@ mkdir -pv $rootfs/{dev,proc,sys,run,tmp,var/lib/systemd}
         </div>
         <script src="../search/main.js"></script>
     </main>
+
     <script>hljs.highlightAll();</script>
 </body>
 
