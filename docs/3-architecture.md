@@ -6,8 +6,6 @@ The firegopher project is made up of three main parts:
 2. The **Guest Init System**, which runs inside of the guest VM and starts the user workload
 3. A set of customised root filesystems ([Base Images](#base-images)) to be used for the guest VM and an **Asset Manager** to install and manage them
 
-![Diagram of the inner workings](assets/diagram.jpg)
-
 ## VM Runner
 The VM Runner has four main responsibilities:
 
@@ -44,25 +42,9 @@ It downloads the following assets:
 
 
 ## Base Images
-Currently there is only one officially supported base image available to be used with firegopher. It is a slightly modified version of [Ubuntu 22.04 Minimal](https://cloud-images.ubuntu.com/minimal/releases/jammy/release/).
+Currently there is only one officially supported base image available to be used with firegopher. It is a slightly modified version of [Ubuntu 22.04 Minimal](https://cloud-images.ubuntu.com/minimal/releases/jammy/release/). The modifications that are currently done to create the finished base image are:
 
-The base image has been modified by running the following bash script inside a container running [public.ecr.aws/ubuntu/ubuntu:jammy](https://gallery.ecr.aws/ubuntu/ubuntu):
+1. Installing `ca-certificates`, `curl` and `python3`
+2. Clearing out the existing package lists afterwards by deleting all files in `/var/lib/apt/lists/`
 
-```bash
-# Install dependencies to run a basic python-based demo application
-apt-get update
-apt-get install -y ca-certificates 
-apt-get install -y curl
-apt-get install -y python3
-rm -rf /var/lib/apt/lists/*
-
-
-# Copy everything we need to the bind-mounted rootfs image file
-dirs="bin etc home lib lib64 root sbin usr"
-for d in $dirs; do tar c "/$d" | tar x -C $rootfs; done
-
-# Make mountpoints
-mkdir -pv $rootfs/{dev,proc,sys,run,tmp,var/lib/systemd}
-```
-
-The process of creating this base image is based on the process [outlined by the Firecracker team here](https://github.com/firecracker-microvm/firecracker/blob/main/docs/rootfs-and-kernel-setup.md#creating-a-rootfs-image).
+The current base image creation process is heavily based the process [outlined by the Firecracker team here](https://github.com/firecracker-microvm/firecracker/blob/main/docs/rootfs-and-kernel-setup.md#creating-a-rootfs-image).
