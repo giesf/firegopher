@@ -21,17 +21,12 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://docs.firegopher.dev/4-known-limitations/</loc>
+         <loc>https://docs.firegopher.dev/4-roadmap/</loc>
          <lastmod>2024-04-12</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://docs.firegopher.dev/5-roadmap/</loc>
-         <lastmod>2024-04-12</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://docs.firegopher.dev/6-contributing/</loc>
+         <loc>https://docs.firegopher.dev/5-contributing/</loc>
          <lastmod>2024-04-12</lastmod>
          <changefreq>daily</changefreq>
     </url>

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>User Guide - firegopher</title>
+    <title>Advanced Usage & Known Limitations - firegopher</title>
     <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/default.min.css">
     <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -72,7 +72,7 @@
                 
                 
                 <li class="current">
-                    <a href="./">User Guide</a>
+                    <a href="./">Advanced Usage & Known Limitations</a>
                 </li>
                 
                 
@@ -84,29 +84,38 @@
                 
                 
                 <li class="">
-                    <a href="../4-known-limitations/">Known limitations</a>
+                    <a href="../4-roadmap/">Roadmap</a>
                 </li>
                 
                 
                 
                 <li class="">
-                    <a href="../5-roadmap/">Roadmap</a>
-                </li>
-                
-                
-                
-                <li class="">
-                    <a href="../6-contributing/">Contributing</a>
+                    <a href="../5-contributing/">Contributing</a>
                 </li>
                 
                 
             </ul>
         </nav>
         
-        <h1 id="user-guide">User Guide</h1>
+        <h1 id="advanced-usage-known-limitations">Advanced Usage &amp; Known Limitations</h1>
 <h2 id="networking">Networking</h2>
-<h2 id="operating-systems">Operating systems</h2>
+<p>The current state of the networking stack should be considered unstable. Every time you run a new microVM firegopher creates a new tap device and assigns it an unused IP from the range <code>172.19.0.0/16</code>. </p>
+<p>This is somewhat wasteful as this results in creating a lot of dangling network devices and assigned IPs. You are currently responsible for cleaning them up. </p>
+<p>There is currently no way of predefining a static IP for a microVM.</p>
+<h2 id="base-images">Base images</h2>
+<p>Currently the only officially supported base image is a slightly modified version of <a href="https://cloud-images.ubuntu.com/minimal/releases/jammy/release/">Ubuntu 22.04 Minimal</a> for demo purposes.</p>
+<p>You can create your own base image to be used with firegopher by following the process <a href="https://github.com/firecracker-microvm/firecracker/blob/main/docs/rootfs-and-kernel-setup.md#creating-a-rootfs-image">outlined by the Firecracker team here</a> and placing the resulting <code>imagename.ext4</code> file in <code>/srv/firegopher</code>. Afterwards you can use the base image by running firegopher with the flag <code>--baseImage=imagename</code>.</p>
 <h2 id="persistent-storage">Persistent storage</h2>
+<p>Currently you can only run firegopher with a single persistent volume that is always mounted to <code>/data</code>.</p>
+<p>Right now you are responsible for creating a image file to back that volume and provide it through the dataVolume flag (e.g. <code>--dateVolume=volume.img</code>).</p>
+<h2 id="firegopher-should-be-considered-unstable-and-unfit-for-production-use-cases">Firegopher should be considered unstable and unfit for production use-cases</h2>
+<p>In addition to the lacking testing infrastructure <strong>this project currently does not implement the basic security and performance considerations needed to run Firecracker in production.</strong> </p>
+<p>This is due to the fact that it was created as a proof of concept in the context of a university project at <a href="https://code.berlin">CODE UAS Berlin</a>. </p>
+<h3 id="firecracker-production-host-recommendations">Firecracker production host recommendations</h3>
+<p>Currently firegopher does not implement <a href="https://github.com/firecracker-microvm/firecracker/blob/main/docs/prod-host-setup.md">the production host setup recommendations that the AWS Firecracker team has provided in their git repo</a>. </p>
+<h3 id="memory-usage">Memory usage</h3>
+<p>Firecracker has the habit of eating up as much ram as it can get its hands on without returning it to the system. <a href="https://news.ycombinator.com/item?id=36667792">You can read a Hacker News thread discussing this here</a>.</p>
+<p>An option for dealing with this is <a href="https://github.com/firecracker-microvm/firecracker/blob/main/docs/ballooning.md">using a memory baloon device with Firecracker</a>, which firegopher currently does not do. </p>
 
         <div class="read-next">
             <a href="/1-getting-started/">Previous: Getting Started</a>
