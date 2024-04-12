@@ -7,5 +7,5 @@ The project is in its very early stages and has currently very little use outsid
 
 > **This project is not meant to be used in production environments.**
 >
-> You can read more about this under [Known Limitations](/4-known-limitations/).
+> You can read more about this under [Known Limitations](/2-user-guide/).
 
