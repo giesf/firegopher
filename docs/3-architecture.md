@@ -6,6 +6,8 @@ The firegopher project is made up of three main parts:
 2. The **Guest Init System**, which runs inside of the guest VM and starts the user workload
 3. A set of customised root filesystems ([Base Images](#base-images)) to be used for the guest VM and an **Asset Manager** to install and manage them
 
+![Relationship of the different modules](assets/RELATIONSHIPS.jpg)
+
 ## VM Runner
 The VM Runner has four main responsibilities:
 
@@ -30,6 +32,15 @@ The main responsibilities of the guest init system are:
 5. dropping root privileges
 6. starting the user workload and supervising it
 
+## Networking
+The current networking setup is in its very early-stages and should not be considered stable.
+
+Firegopher is designed to be used with a reverse proxy on the host machine that routes incoming traffic to the different running microVMs. In the future Firegopher will automatically configure a reverse proxy based on the users needs. Currently users need to configure a reverse proxy manually.
+
+Currently every microVM is automatically assigned a non-internet-routable IP in the range 172.19.0.0/16. The host system is instructed to forward all traffic from the microVM to the internet.
+
+![Network topology](assets/NETWORKING.jpg)
+
 
 ## Asset Manager
 The Asset Manager is currently in the early stages of its development. In its current state it is little more than a glorified download script. 
@@ -47,4 +58,6 @@ Currently there is only one officially supported base image available to be used
 1. Installing `ca-certificates`, `curl` and `python3`
 2. Clearing out the existing package lists afterwards by deleting all files in `/var/lib/apt/lists/`
 
-The current base image creation process is heavily based the process [outlined by the Firecracker team here](https://github.com/firecracker-microvm/firecracker/blob/main/docs/rootfs-and-kernel-setup.md#creating-a-rootfs-image).
+The current base image creation process is heavily based on the process [outlined by the Firecracker team here](https://github.com/firecracker-microvm/firecracker/blob/main/docs/rootfs-and-kernel-setup.md#creating-a-rootfs-image).
+
+
