@@ -138,11 +138,6 @@
 <li>dropping root privileges</li>
 <li>starting the user workload and supervising it</li>
 </ol>
-<h2 id="networking">Networking</h2>
-<p>The current networking setup is in its very early-stages and should not be considered stable.</p>
-<p>Firegopher is designed to be used with a reverse proxy on the host machine that routes incoming traffic to the different running microVMs. In the future Firegopher will automatically configure a reverse proxy based on the users needs. Currently users need to configure a reverse proxy manually.</p>
-<p>Currently every microVM is automatically assigned a non-internet-routable IP in the range 172.19.0.0/16. The host system is instructed to forward all traffic from the microVM to the internet.</p>
-<p><img alt="Network topology" src="../assets/NETWORKING.jpg" /></p>
 <h2 id="asset-manager">Asset Manager</h2>
 <p>The Asset Manager is currently in the early stages of its development. In its current state it is little more than a glorified download script. </p>
 <p>It downloads the following assets:</p>
@@ -158,6 +153,11 @@
 <li>Clearing out the existing package lists afterwards by deleting all files in <code>/var/lib/apt/lists/</code></li>
 </ol>
 <p>The current base image creation process is heavily based on the process <a href="https://github.com/firecracker-microvm/firecracker/blob/main/docs/rootfs-and-kernel-setup.md#creating-a-rootfs-image">outlined by the Firecracker team here</a>.</p>
+<h2 id="networking">Networking</h2>
+<p>The current networking setup is in its very early-stages and should not be considered stable.</p>
+<p>Firegopher is designed to be used with a reverse proxy on the host machine that routes incoming traffic to the different running microVMs. In the future Firegopher will automatically configure a reverse proxy based on the users needs. Currently users need to configure a reverse proxy manually.</p>
+<p>Currently every microVM is automatically assigned a non-internet-routable IP in the range 172.19.0.0/16. The host system is instructed to forward all traffic from the microVM to the internet.</p>
+<p><img alt="Network topology" src="../assets/NETWORKING.jpg" /></p>
 
         <div class="read-next">
             <a href="/2-user-guide/">Previous: User Guide</a>
